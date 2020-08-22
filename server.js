@@ -6,13 +6,6 @@ const axios = require("axios");
 
 let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
 
-const getData = async () => {
-  let response = await axios.get(
-    "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
-  );
-  return response;
-};
-
 //route1 access from client
 app.get("/", (req, res) => {
   res.send("Hello From Expresssss!!!");
@@ -24,8 +17,11 @@ app.get("/API/data", (req, res) => {
 });
 
 //route 3
-app.get("/API/lsg", (req, res) => {
-  res.send(getData());
+app.get("/API/lsg", async (req, res) => {
+  let response = await axios.get(
+    "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
+  );
+  res.send(response.data);
 });
 
 //when server run will listen on this port.
