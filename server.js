@@ -24,7 +24,7 @@ app.get("/API/data", (req, res) => {
 });
 
 //route 3
-app.get("API/lsg", (req, res) => {
+app.get("/API/lsg", (req, res) => {
   res.send(getData());
 });
 
