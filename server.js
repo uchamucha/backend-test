@@ -5,12 +5,15 @@ const axios = require("axios");
 
 let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
 
-const getknrJSON = (response) => {
+const getknrJSON = async () => {
+  let response = await axios.get(
+    "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
+  );
   let knrFeatures = response.data.features.filter((obj) => {
     return obj.properties.district === "Kannur";
   });
-  let filteredJSON = { type: "FeatureCollection", features: knrFeatures };
-  return filteredJSON;
+  let knrJSON = { type: "FeatureCollection", features: knrFeatures };
+  return knrJSON;
 };
 
 //route1 access from client
@@ -21,20 +24,15 @@ app.get("/", (req, res) => {
 
 //route 2 lsg data
 app.get("/API/hotspots", async (req, res) => {
-  let response = await axios.get(
-    "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
-  );
-  let knrJSON = getknrJSON(response);
+  let knrJSON = await getknrJSON();
   res.send(knrJSON);
 });
 
 //route 3
 app.get("/API/lsglist", async (req, res) => {
-  let response = await axios.get(
-    "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
-  );
+  let temp = await getknrJSON();
 
-  let temp = getknrJSON(response).features.map((obj) => {
+  let lsglist = temp.features.map((obj) => {
     return {
       id: obj.properties.id,
       label: obj.properties.label,
@@ -42,7 +40,7 @@ app.get("/API/lsglist", async (req, res) => {
     };
   });
 
-  res.send(temp);
+  res.send(lsglist);
 });
 
 //when server run will listen on this port.
