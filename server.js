@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const axios = require("axios");
 
 let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
@@ -13,10 +14,9 @@ const getknrJSON = (response) => {
 };
 
 //route1 access from client
+//we use path because unlike client side the root directory is the base system root and not your app folder
 app.get("/", (req, res) => {
-  res.send(
-    "Welcome to Covid Kannur API. \n\n Use '/API/hotspots' route for Containment Zones GeoJSON data. \n\n Use '/API/lsglist' for list of containment zones and containment wards within each zone."
-  );
+  res.sendFile(path.join(__dirname + "/index.html"));
 });
 
 //route 2 lsg data
