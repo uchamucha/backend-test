@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const axios = require("axios");
+const cors = require("cors");
 
 let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
 
@@ -23,13 +24,13 @@ app.get("/", (req, res) => {
 });
 
 //route 2 lsg data
-app.get("/API/hotspots", async (req, res) => {
+app.get("/API/hotspots", cors(), async (req, res) => {
   let knrJSON = await getknrJSON();
   res.send(knrJSON);
 });
 
 //route 3
-app.get("/API/lsglist", async (req, res) => {
+app.get("/API/lsglist", cors(), async (req, res) => {
   let temp = await getknrJSON();
 
   let lsglist = temp.features.map((obj) => {
