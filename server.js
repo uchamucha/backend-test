@@ -21,10 +21,16 @@ app.get("/API/lsg", async (req, res) => {
   let response = await axios.get(
     "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
   );
-  res.send(response.data);
+
+  let knr = response.data.features.filter((obj) => {
+    obj.properties.district === "Kannur";
+  });
+  res.send(knr);
 });
 
 //when server run will listen on this port.
 app.listen(port, () => {
   console.log("listeninggg");
 });
+
+//install cors and continue with react
