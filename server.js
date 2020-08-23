@@ -25,7 +25,7 @@ app.get("/API/lsg", async (req, res) => {
   let knr = response.data.features.filter((obj) => {
     obj.properties.district === "Kannur";
   });
-  res.send(knr);
+  res.send(response.data);
 });
 
 //when server run will listen on this port.
