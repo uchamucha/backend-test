@@ -22,10 +22,13 @@ app.get("/API/lsg", async (req, res) => {
     "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
   );
 
-  let knr = response.data.features.filter((obj) => {
-    obj.properties.district === "Kannur";
+  let knrFeatures = response.data.features.filter((obj) => {
+    return obj.properties.district === "Kannur";
   });
-  res.send(response.data);
+
+  let filteredJSON = { type: "FeatureCollection", features: knrFeatures };
+
+  res.send(filteredJSON);
 });
 
 //when server run will listen on this port.
