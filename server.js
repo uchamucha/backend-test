@@ -4,6 +4,8 @@ const path = require("path");
 const axios = require("axios");
 const cors = require("cors");
 
+const turf = require("@turf/turf");
+
 let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
 
 const getknrJSON = async () => {
@@ -13,7 +15,13 @@ const getknrJSON = async () => {
   let knrFeatures = response.data.features.filter((obj) => {
     return obj.properties.district === "Kannur";
   });
+
+  //adding centroid to each feature
+  knrFeatures.forEach((feature) => {
+    feature.properties.centroid = turf.centroid(feature).geometry.coordinates;
+  });
   let knrJSON = { type: "FeatureCollection", features: knrFeatures };
+
   return knrJSON;
 };
 
@@ -46,7 +54,5 @@ app.get("/API/lsglist", cors(), async (req, res) => {
 
 //when server run will listen on this port.
 app.listen(port, () => {
-  console.log("listeninggg");
+  console.log("listening");
 });
-
-//install cors and continue with react
