@@ -17,25 +17,11 @@ const getknrJSON = async () => {
     return obj.properties.district === "Kannur";
   });
 
-  //get Kannur index
-  let tempIndex = [];
-  response.data.features.forEach((obj, index, array) => {
-    if (obj.properties.district === "Kannur") {
-      tempIndex.push(index + 1);
-    }
-  });
-
-  let knrCoord = response.data.features.filter((obj, index, array) => {
-    return tempIndex.includes(index);
-  });
-
-  console.log(knrCoord);
-
   //adding centroid to each feature
-  knrFeatures.forEach((feature, index, array) => {
+  knrFeatures.forEach((feature) => {
     feature.properties.centroid = {};
-    feature.properties.centroid.long = knrCoord[index].geometry.coordinates[0];
-    feature.properties.centroid.lat = knrCoord[index].geometry.coordinates[1];
+    feature.properties.centroid.long = turf.centroid(feature).coordinates[0];
+    feature.properties.centroid.lat = turf.centroid(feature).coordinates[1];
   });
   let knrJSON = { type: "FeatureCollection", features: knrFeatures };
 
