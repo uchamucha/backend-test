@@ -63,6 +63,16 @@ app.get("/API/lsglist", cors(), async (req, res) => {
   res.send(lsglist);
 });
 
+app.get("/API/overview", cors(), async (req, res) => {
+  let response = await axios.get(
+    "https://api.covid19india.org/state_district_wise.json"
+  );
+
+  let overviewKnr = response.data.Kerala.districtData.Kannur;
+
+  res.send(overviewKnr);
+});
+
 //when server run will listen on this port.
 app.listen(port, () => {
   console.log("listening");
