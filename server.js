@@ -18,6 +18,7 @@ const getknrJSON = async () => {
 
   //adding centroid to each feature
   knrFeatures.forEach((feature) => {
+    feature.properties.centroid = {};
     feature.properties.centroid.long = turf.centroid(
       feature
     ).geometry.coordinates[0];
