@@ -5,7 +5,8 @@ const axios = require("axios");
 const cors = require("cors");
 
 const turf = require("@turf/turf");
-const { feature } = require("@turf/turf");
+const polylabel = require("polylabel");
+const { feature, geometry } = require("@turf/turf");
 
 let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
 
@@ -20,12 +21,14 @@ const getknrJSON = async () => {
   // adding centroid to each feature
   knrFeatures.forEach((feature) => {
     feature.properties.centroid = {};
-    feature.properties.centroid.long = turf.centroid(
-      feature
-    ).geometry.coordinates[0];
-    feature.properties.centroid.lat = turf.centroid(
-      feature
-    ).geometry.coordinates[1];
+    feature.properties.centroid.long = polylabel(
+      feature.geometry.coordinates[0],
+      1.0
+    )[0];
+    feature.properties.centroid.lat = polylabel(
+      feature.geometry.coordinates[0],
+      1.0
+    )[1];
   });
 
   let knrJSON = { type: "FeatureCollection", features: knrFeatures };
