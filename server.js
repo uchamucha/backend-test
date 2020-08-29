@@ -63,6 +63,7 @@ app.get("/API/lsglist", cors(), async (req, res) => {
   res.send(lsglist);
 });
 
+//route4 - overview
 app.get("/API/overview", cors(), async (req, res) => {
   let response = await axios.get(
     "https://api.covid19india.org/state_district_wise.json"
@@ -71,6 +72,30 @@ app.get("/API/overview", cors(), async (req, res) => {
   let overviewKnr = response.data.Kerala.districtData.Kannur;
 
   res.send(overviewKnr);
+});
+
+//route5 - graphsdata
+app.get("/API/details", cors(), async (req, res) => {
+  let response = await axios.get(
+    "https://api.covid19india.org/v4/data-all.json"
+  );
+
+  let temp = [];
+
+  temp.push(response.data);
+
+  let temp1 = [];
+
+  temp.forEach((obj) => {
+    for (const [key, value] of Object.entries(obj)) {
+      if (value.KL.districts !== undefined)
+        if (value.KL.districts.Kannur !== undefined) {
+          temp1.push({ date: key, Kannur: value.KL.districts.Kannur });
+        }
+    }
+  });
+
+  res.send(temp1);
 });
 
 //when server run will listen on this port.
