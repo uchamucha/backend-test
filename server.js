@@ -21,14 +21,24 @@ const getknrJSON = async () => {
   // adding centroid to each feature
   knrFeatures.forEach((feature) => {
     feature.properties.centroid = {};
-    feature.properties.centroid.long = polylabel(feature.geometry, 1.0)[0];
-    feature.properties.centroid.lat = polylabel(feature.geometry, 1.0)[1];
+    feature.properties.centroid.long = polylabel(
+      feature.geometry.coordinates,
+      1.0
+    )[0];
+    feature.properties.centroid.lat = polylabel(
+      feature.geometry.coordinates,
+      1.0
+    )[1];
+
+    console.log(feature.properties.centroid);
   });
 
   let knrJSON = { type: "FeatureCollection", features: knrFeatures };
 
   return knrJSON;
 };
+
+getknrJSON();
 
 //route1 access from client
 //we use path because unlike client side the root directory is the base system root and not your app folder
