@@ -29,16 +29,12 @@ const getknrJSON = async () => {
       feature.geometry.coordinates,
       1.0
     )[1];
-
-    console.log(feature.properties.centroid);
   });
 
   let knrJSON = { type: "FeatureCollection", features: knrFeatures };
 
   return knrJSON;
 };
-
-getknrJSON();
 
 //route1 access from client
 //we use path because unlike client side the root directory is the base system root and not your app folder
