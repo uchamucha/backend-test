@@ -21,14 +21,8 @@ const getknrJSON = async () => {
   // adding centroid to each feature
   knrFeatures.forEach((feature) => {
     feature.properties.centroid = {};
-    feature.properties.centroid.long = polylabel(
-      feature.geometry.coordinates[0],
-      1.0
-    )[0];
-    feature.properties.centroid.lat = polylabel(
-      feature.geometry.coordinates[0],
-      1.0
-    )[1];
+    feature.properties.centroid.long = polylabel(feature.geometry, 1.0)[0];
+    feature.properties.centroid.lat = polylabel(feature.geometry, 1.0)[1];
   });
 
   let knrJSON = { type: "FeatureCollection", features: knrFeatures };
