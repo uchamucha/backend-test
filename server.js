@@ -6,8 +6,7 @@ const cors = require("cors");
 
 const polylabel = require("polylabel");
 
-let port = 3000; //process.env.PORT to get whatever port available in the env variable PORT
-// let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
+let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
 
 const getknrJSON = async () => {
   let response = await axios.get(
@@ -16,8 +15,6 @@ const getknrJSON = async () => {
   let knrFeatures = response.data.features.filter((obj) => {
     return obj.properties.district === "Kannur";
   });
-
-  // let blabla = polylabel(knrFeatures[31].geometry.coordinates, 1)[0];
 
   console.log(knrFeatures[31].geometry.coordinates);
 
@@ -42,7 +39,6 @@ const getknrJSON = async () => {
 
   let knrJSON = { type: "FeatureCollection", features: knrFeatures };
 
-  console.log("RUNNING HOTSPOTS");
   return knrJSON;
 };
 
@@ -70,8 +66,6 @@ app.get("/API/lsglist", cors(), async (req, res) => {
     };
   });
 
-  console.log("RUNNING LSGLIST");
-
   res.send(lsglist);
 });
 
@@ -82,7 +76,7 @@ app.get("/API/overview", cors(), async (req, res) => {
   );
 
   let overviewKnr = response.data.Kerala.districtData.Kannur;
-  console.log("RUNNING OVERVIEW");
+
   res.send(overviewKnr);
 });
 
@@ -107,7 +101,6 @@ app.get("/API/details", cors(), async (req, res) => {
     }
   });
 
-  console.log("RUNNING DETAILS");
   res.send(temp1);
 });
 
