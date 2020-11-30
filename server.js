@@ -4,11 +4,10 @@ const path = require("path");
 const axios = require("axios");
 const cors = require("cors");
 
-const turf = require("@turf/turf");
 const polylabel = require("polylabel");
-const { feature, geometry } = require("@turf/turf");
 
-let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
+let port = 3000; //process.env.PORT to get whatever port available in the env variable PORT
+// let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
 
 const getknrJSON = async () => {
   let response = await axios.get(
@@ -18,21 +17,32 @@ const getknrJSON = async () => {
     return obj.properties.district === "Kannur";
   });
 
-  // adding centroid to each feature
+  // let blabla = polylabel(knrFeatures[31].geometry.coordinates, 1)[0];
+
+  console.log(knrFeatures[31].geometry.coordinates);
+
+  //adding centroid to each feature
   knrFeatures.forEach((feature) => {
     feature.properties.centroid = {};
-    feature.properties.centroid.long = polylabel(
-      feature.geometry.coordinates,
-      1.0
-    )[0];
-    feature.properties.centroid.lat = polylabel(
-      feature.geometry.coordinates,
-      1.0
-    )[1];
+
+    if (feature.geometry.coordinates.length === 1) {
+      feature.properties.centroid.long = polylabel(
+        feature.geometry.coordinates,
+        1
+      )[0];
+
+      feature.properties.centroid.lat = polylabel(
+        feature.geometry.coordinates,
+        1
+      )[1];
+    } else if (feature.geometry.coordinates.length === 2) {
+      feature.properties.centroid = feature.geometry.coordinates;
+    }
   });
 
   let knrJSON = { type: "FeatureCollection", features: knrFeatures };
 
+  console.log("RUNNING HOTSPOTS");
   return knrJSON;
 };
 
@@ -60,6 +70,8 @@ app.get("/API/lsglist", cors(), async (req, res) => {
     };
   });
 
+  console.log("RUNNING LSGLIST");
+
   res.send(lsglist);
 });
 
@@ -70,7 +82,7 @@ app.get("/API/overview", cors(), async (req, res) => {
   );
 
   let overviewKnr = response.data.Kerala.districtData.Kannur;
-
+  console.log("RUNNING OVERVIEW");
   res.send(overviewKnr);
 });
 
@@ -95,6 +107,7 @@ app.get("/API/details", cors(), async (req, res) => {
     }
   });
 
+  console.log("RUNNING DETAILS");
   res.send(temp1);
 });
 
