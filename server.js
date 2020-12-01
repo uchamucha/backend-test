@@ -8,7 +8,7 @@ const polylabel = require("polylabel");
 
 let port = process.env.PORT || 5000; //process.env.PORT to get whatever port available in the env variable PORT
 
-const getknrJSON = async () => {
+const getknrJSON = async (district) => {
   let response = await axios.get(
     "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
   );
