@@ -1,3 +1,5 @@
+const polylabel = require("polylabel");
+//data for each district
 exports.getDistJSON = async (district) => {
   let response = await axios.get(
     "https://hotspot-api.ngh.staging.n1sh.com/hotspots/latest.json"
